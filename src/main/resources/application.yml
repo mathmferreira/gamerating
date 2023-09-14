@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: gamerating
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mydatabase
+    username: system
+    password: secret
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
