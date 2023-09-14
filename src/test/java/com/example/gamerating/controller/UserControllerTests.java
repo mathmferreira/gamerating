@@ -57,7 +57,7 @@ public class UserControllerTests extends CrudControllerTests<User, UserVO> {
         expectedVoUpdated = UserVO.builder().id(1L).name("Full Name Updated").email("exampleupdated@test.com").pass("pass123").build();
         voToPartialUpdate = UserVO.builder().name("Full Name Updated").build();
         entityPartialUpdated = User.builder().id(1L).name("Full Name Updated").email("example@test.com").pass("pass123").build();
-        voPartialUpdated =UserVO.builder().id(1L).name("Full Name Updated").email("example@test.com").pass("pass123").build();
+        voPartialUpdated = UserVO.builder().id(1L).name("Full Name Updated").email("example@test.com").pass("pass123").build();
     }
 
 }
