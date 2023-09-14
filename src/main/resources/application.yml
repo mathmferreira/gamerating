@@ -20,3 +20,8 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+
+jwt:
+  config:
+    privateKey: jYCemjKRUUo4vOSVtjVB1uxnAqjkYaDU
+    expiration: 3600
