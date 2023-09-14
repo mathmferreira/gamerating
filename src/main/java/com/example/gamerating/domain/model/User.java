@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springframework.beans.BeanUtils;
 
 import static com.example.gamerating.util.DBConstUtils.*;
 
@@ -35,5 +36,9 @@ public class User extends AuditableEntity {
     @ToString.Exclude
     @Column(nullable = false)
     private String pass;
+
+    public User(User user) {
+        BeanUtils.copyProperties(user, this);
+    }
 
 }
