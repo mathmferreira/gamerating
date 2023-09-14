@@ -41,7 +41,6 @@ public class SecurityConfig {
                 .exceptionHandling(it -> it.authenticationEntryPoint((req, resp, e) -> resp.sendError(HttpServletResponse.SC_UNAUTHORIZED)))
                 .authorizeHttpRequests(it -> it
                         .requestMatchers(new AntPathRequestMatcher(jwtConfig.getLoginUrl())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/**/swagger-ui.html")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/v1/user", HttpMethod.POST.name())).permitAll()
                         .anyRequest().authenticated())
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtConfig, tokenService))

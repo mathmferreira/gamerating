@@ -20,7 +20,7 @@ CREATE TABLE game_tb (
    game_id BIGINT NOT NULL,
    title VARCHAR(255) NOT NULL,
    description VARCHAR(255),
-   genre_type VARCHAR(255) NOT NULL,
+   genre_type VARCHAR(255) NOT NULL CHECK (genre_type in ('ACTION','ACTION_ADVENTURE','ADVENTURE','BOARD_CARD_GAME','PUZZLE','ROLE_PLAYING','SANDBOX','SIMULATION','STRATEGY','SPORTS','MMO')),
    release_date date NOT NULL,
    aud_created_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
    aud_created_by VARCHAR(255) NOT NULL,
