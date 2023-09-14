@@ -7,7 +7,6 @@ import com.example.gamerating.util.ValidationUtils;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.*;
 
 import java.util.List;
@@ -24,13 +23,10 @@ public abstract class CrudServiceTests<T extends AbstractEntity> {
 
     protected abstract CrudService<T> getService();
 
-    protected abstract void updateEntity();
-
     protected T entityToCreate;
     protected T expected;
-    protected T newExpected;
+    protected T entityUpdated;
     protected T emptyObject;
-    protected T filterToFound;
     protected T filterToNotFound;
     protected T filterEntity1;
     protected T filterEntity2;
@@ -77,12 +73,11 @@ public abstract class CrudServiceTests<T extends AbstractEntity> {
 
     @Test
     public void givenEntity_whenFindAllWithNoFilters_thenReturnPagedAllEntities() {
-        BeanUtils.copyProperties(expected, newExpected);
-        newExpected.setId(2L);
+        entityUpdated.setId(2L);
 
         Page<T> expectedPage1 = new PageImpl<>(List.of(expected));
         Pageable page1 = PageRequest.of(0,1);
-        Page<T> expectedPage2 = new PageImpl<>(List.of(newExpected));
+        Page<T> expectedPage2 = new PageImpl<>(List.of(entityUpdated));
         Pageable page2 = PageRequest.of(1,1);
 
         when(getRepository().findAll(any(Example.class), eq(page1))).thenReturn(expectedPage1);
@@ -101,12 +96,11 @@ public abstract class CrudServiceTests<T extends AbstractEntity> {
 
     @Test
     public void givenEntity_whenFindAllWithAnyFilters_thenReturnPagedAllFilteredEntities() {
-        BeanUtils.copyProperties(expected, newExpected);
-        newExpected.setId(2L);
+        entityUpdated.setId(2L);
 
         Page<T> expectedPage1 = new PageImpl<>(List.of(expected));
         Pageable page1 = PageRequest.of(0,1);
-        Page<T> expectedPage2 = new PageImpl<>(List.of(newExpected));
+        Page<T> expectedPage2 = new PageImpl<>(List.of(entityUpdated));
         Pageable page2 = PageRequest.of(1,1);
 
         when(getRepository().findAll(any(Example.class), eq(page1))).thenReturn(expectedPage1);
@@ -134,24 +128,16 @@ public abstract class CrudServiceTests<T extends AbstractEntity> {
 
     @Test
     public void givenEntity_whenUpdate_thenReturnUpdatedEntity() {
-        BeanUtils.copyProperties(expected, newExpected);
-        BeanUtils.copyProperties(newExpected, toUpdate);
-        updateEntity();
-
         when(getRepository().findById(anyLong())).thenReturn(Optional.ofNullable(expected));
-        when(getRepository().save(any())).thenReturn(newExpected);
+        when(getRepository().save(any())).thenReturn(entityUpdated);
 
         T actual = assertDoesNotThrow(() -> getService().update(expected.getId(), toUpdate));
         assertNotNull(actual);
-        assertEquals(newExpected.toString(), actual.toString());
+        assertEquals(entityUpdated.toString(), actual.toString());
     }
 
     @Test
     public void givenEntity_whenUpdate_thenThrowEntityNotFoundException() {
-        BeanUtils.copyProperties(expected, newExpected);
-        BeanUtils.copyProperties(newExpected, toUpdate);
-        updateEntity();
-
         when(getRepository().findById(0L)).thenReturn(Optional.empty());
         CrudService<T> service = getService();
         assertThrows(EntityNotFoundException.class, () -> service.update(0L, toUpdate));
