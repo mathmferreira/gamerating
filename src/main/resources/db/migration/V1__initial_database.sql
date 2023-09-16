@@ -47,3 +47,6 @@ ALTER TABLE user_tb ADD CONSTRAINT uc_user_tb_email UNIQUE (email);
 ALTER TABLE rating_tb ADD CONSTRAINT fk_game_rating FOREIGN KEY (game_id) REFERENCES game_tb (game_id);
 
 ALTER TABLE rating_tb ADD CONSTRAINT fk_user_rating FOREIGN KEY (user_id) REFERENCES user_tb (user_id);
+
+INSERT INTO user_tb (user_id, name, email, pass, aud_created_date, aud_created_by) VALUES
+    (NEXTVAL('user_id_sequence'), 'Admin', 'admin@gmail.com', '$2a$10$WlNtjqYNbS5PiutTe/resuHNeZ7y5cPDRFrm0Xu7lgmbwfhgatnee', CURRENT_TIMESTAMP, 'system');
