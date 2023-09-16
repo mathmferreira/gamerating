@@ -44,11 +44,13 @@ public abstract class CrudController<T extends AbstractEntity, VO extends Abstra
         T entityFilters = getConverter().convertToEntity(filters);
         Page<T> result = getService().findAll(entityFilters, getPageableOf(pageable));
         HttpHeaders headers = new HttpHeaders();
-        headers.add("currentPage", String.valueOf(pageable.getPage() + 1));
-        headers.add("totalElements", String.valueOf(result.getTotalElements()));
-        headers.add("totalPages", String.valueOf(result.getTotalPages()));
+        headers.add(PageRequestVO.CURRENT_PAGE_HEADER, String.valueOf(pageable.getPage()));
+        headers.add(PageRequestVO.CURRENT_ELEMENTS_HEADER, String.valueOf(result.getNumberOfElements()));
+        headers.add(PageRequestVO.TOTAL_ELEMENTS_HEADER, String.valueOf(result.getTotalElements()));
+        headers.add(PageRequestVO.TOTAL_PAGES_HEADER, String.valueOf(result.getTotalPages()));
         List<VO> content = result.map(getConverter()::convertToVO).getContent();
-        return new ResponseEntity<>(content, headers, HttpStatus.PARTIAL_CONTENT);
+        HttpStatus status = result.getTotalElements() == 0 ? HttpStatus.NO_CONTENT : HttpStatus.PARTIAL_CONTENT;
+        return new ResponseEntity<>(content, headers, status);
     }
 
     @PutMapping(value = "/{id}")

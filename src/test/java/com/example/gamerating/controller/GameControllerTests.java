@@ -46,34 +46,28 @@ public class GameControllerTests extends CrudControllerTests<Game, GameVO> {
 
     @BeforeEach
     public void init() {
-        voToCreate = GameVO.builder().title("Game Title").genreType(GenreType.ACTION)
-                .releaseDate(LocalDate.of(2022, Month.MARCH, 22)).build();
-        createdEntity = Game.builder().id(1L).title("Game Title").genreType(GenreType.ACTION)
-                .releaseDate(LocalDate.of(2022, Month.MARCH, 22)).build();
-        voConverted = GameVO.builder().id(1L).title("Game Title").genreType(GenreType.ACTION)
-                .releaseDate(LocalDate.of(2022, Month.MARCH, 22)).build();
-        expected = GameVO.builder().id(1L).title("Game Title").genreType(GenreType.ACTION)
-                .releaseDate(LocalDate.of(2022, Month.MARCH, 22)).build();
-        secondEntity = Game.builder().id(2L).title("Game Title 2").genreType(GenreType.ACTION)
-                .releaseDate(LocalDate.of(2021, Month.SEPTEMBER, 13)).build();
-        voSecondEntity = GameVO.builder().id(2L).title("Game Title 2").genreType(GenreType.ACTION)
-                .releaseDate(LocalDate.of(2021, Month.SEPTEMBER, 13)).build();
+        LocalDate releaseDate1 = LocalDate.of(2022, Month.MARCH, 22);
+        LocalDate releaseDate2 = LocalDate.of(2021, Month.SEPTEMBER, 13);
+        voToCreate = GameVO.builder().title("Game Title").genreType(GenreType.ACTION).releaseDate(releaseDate1).build();
+        createdEntity = Game.builder().id(1L).title("Game Title").genreType(GenreType.ACTION).releaseDate(releaseDate1).build();
+        voConverted = GameVO.builder().id(1L).title("Game Title").genreType(GenreType.ACTION).releaseDate(releaseDate1).build();
+        expected = GameVO.builder().id(1L).title("Game Title").genreType(GenreType.ACTION).releaseDate(releaseDate1).build();
+        secondEntity = Game.builder().id(2L).title("Game Title 2").genreType(GenreType.ACTION).releaseDate(releaseDate2).build();
+        voSecondEntity = GameVO.builder().id(2L).title("Game Title 2").genreType(GenreType.ACTION).releaseDate(releaseDate2).build();
         emptyFilter = new GameVO();
         voFilter = GameVO.builder().title("game title").build();
         voFilterNotFound = GameVO.builder().title("not found").build();
         entityToUpdate = Game.builder().title("Game Title Updated").description("description updated").genreType(GenreType.ACTION)
-                .releaseDate(LocalDate.of(2022, Month.MARCH, 22)).build();
+                .releaseDate(releaseDate1).build();
         voToUpdate = GameVO.builder().title("Game Title Updated").description("description updated").genreType(GenreType.ACTION)
-                .releaseDate(LocalDate.of(2022, Month.MARCH, 22)).build();
+                .releaseDate(releaseDate1).build();
         entityUpdated = Game.builder().id(1L).title("Game Title Updated").description("description updated").genreType(GenreType.ACTION)
-                .releaseDate(LocalDate.of(2022, Month.MARCH, 22)).build();
+                .releaseDate(releaseDate1).build();
         expectedVoUpdated = GameVO.builder().id(1L).title("Game Title Updated").description("description updated").genreType(GenreType.ACTION)
-                .releaseDate(LocalDate.of(2022, Month.MARCH, 22)).build();
+                .releaseDate(releaseDate1).build();
         voToPartialUpdate = GameVO.builder().title("Game Title Updated").build();
-        entityPartialUpdated = Game.builder().id(1L).title("Game Title Updated").genreType(GenreType.ACTION)
-                .releaseDate(LocalDate.of(2022, Month.MARCH, 22)).build();
-        voPartialUpdated = GameVO.builder().id(1L).title("Game Title Updated").genreType(GenreType.ACTION)
-                .releaseDate(LocalDate.of(2022, Month.MARCH, 22)).build();
+        entityPartialUpdated = Game.builder().id(1L).title("Game Title Updated").genreType(GenreType.ACTION).releaseDate(releaseDate1).build();
+        voPartialUpdated = GameVO.builder().id(1L).title("Game Title Updated").genreType(GenreType.ACTION).releaseDate(releaseDate1).build();
     }
 
 }

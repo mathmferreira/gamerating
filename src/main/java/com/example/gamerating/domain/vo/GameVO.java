@@ -1,6 +1,8 @@
 package com.example.gamerating.domain.vo;
 
 import com.example.gamerating.enums.GenreType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 
 @Data @Builder
 @NoArgsConstructor @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GameVO implements AbstractEntityVO {
 
     private Long id;
@@ -25,6 +28,7 @@ public class GameVO implements AbstractEntityVO {
     private GenreType genreType;
 
     @NotNull
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate releaseDate;
 
 }

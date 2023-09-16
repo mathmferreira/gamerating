@@ -11,6 +11,11 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PageRequestVO implements Serializable {
 
+    public static final String CURRENT_PAGE_HEADER = "currentPage";
+    public static final String CURRENT_ELEMENTS_HEADER = "currentElements";
+    public static final String TOTAL_ELEMENTS_HEADER = "totalElements";
+    public static final String TOTAL_PAGES_HEADER = "totalPages";
+
     @Builder.Default
     private int page = 0;
 

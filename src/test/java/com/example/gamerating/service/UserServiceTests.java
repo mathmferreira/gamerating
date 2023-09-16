@@ -8,12 +8,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTests extends CrudServiceTests<User> {
 
     @Mock
     private UserRepository repository;
+
+    @Mock
+    private BCryptPasswordEncoder encoder;
 
     @InjectMocks
     private UserService service;
