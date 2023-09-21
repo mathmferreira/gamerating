@@ -26,6 +26,7 @@ val commonsCollectionsVersion = "4.4"
 val jwtVersion = "9.31"
 val restAssuredVersion = "5.3.1"
 val jacksonDatatypeJsrVersion = "2.15.2"
+val openApiVersion = "2.2.0"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -47,7 +48,7 @@ dependencies {
 	implementation("com.nimbusds:nimbus-jose-jwt:$jwtVersion")
 	implementation("io.rest-assured:rest-assured:$restAssuredVersion")
 	implementation("io.rest-assured:spring-mock-mvc:$restAssuredVersion")
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$openApiVersion")
 
 	implementation("org.flywaydb:flyway-core")
 	runtimeOnly("org.postgresql:postgresql")
