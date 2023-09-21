@@ -47,6 +47,7 @@ dependencies {
 	implementation("com.nimbusds:nimbus-jose-jwt:$jwtVersion")
 	implementation("io.rest-assured:rest-assured:$restAssuredVersion")
 	implementation("io.rest-assured:spring-mock-mvc:$restAssuredVersion")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 
 	implementation("org.flywaydb:flyway-core")
 	runtimeOnly("org.postgresql:postgresql")

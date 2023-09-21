@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -42,6 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(it -> it
                         .requestMatchers(new AntPathRequestMatcher(jwtConfig.getLoginUrl())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/v1/user", HttpMethod.POST.name())).permitAll()
+                        .requestMatchers(swaggerConfig()).permitAll()
                         .anyRequest().authenticated())
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtConfig, tokenService))
                 .addFilterAfter(new JwtTokenAuthorizationFilter(jwtConfig, tokenConverter), UsernamePasswordAuthenticationFilter.class)
@@ -70,6 +72,14 @@ public class SecurityConfig {
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    private RequestMatcher[] swaggerConfig() {
+        return new AntPathRequestMatcher[] {
+                new AntPathRequestMatcher("/v3/api-docs/**"),
+                new AntPathRequestMatcher("/swagger-ui/**"),
+                new AntPathRequestMatcher("/gamerating-swagger.yaml"),
+        };
     }
 
 }
