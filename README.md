@@ -32,6 +32,9 @@ such as RestAssuredMockMvc for integration tests.
 - Flyway
 - Lombok
 - JWT (Nimbus Jose)
+- JUnit 5
+- RestAssured
+- MockMvc
 - OpenAPI 3 (Swagger)
 
 ## Getting Started
