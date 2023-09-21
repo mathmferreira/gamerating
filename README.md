@@ -23,7 +23,7 @@ Here you will see the concepts of SOLID, DRY and Clean Code applied, such as gen
 Built in Spring Boot 3 with Spring Security 6, this stateless API uses an encrypted JWT for authentication and JUnit 5 for unit testing purposes, 
 such as RestAssuredMockMvc for integration tests.
 
-## Frameworks
+### Frameworks
 
 - Spring Boot 3
 - Spring Security 6
