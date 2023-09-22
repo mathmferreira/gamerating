@@ -8,8 +8,12 @@ import com.example.gamerating.service.CrudService;
 import com.example.gamerating.service.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/v1/rating")
@@ -27,6 +31,18 @@ public class RatingController extends CrudController<Rating, RatingVO> {
     @Override
     protected Converter<Rating, RatingVO> getConverter() {
         return converter;
+    }
+
+    @GetMapping(value = "/game/{gameId}")
+    public List<RatingVO> findByGame(@PathVariable Long gameId) {
+        List<Rating> list = service.findByGame(gameId);
+        return list.parallelStream().map(converter::convertToVO).toList();
+    }
+
+    @GetMapping(value = "/game/avg/{gameId}")
+    public double findAvgByGame(@PathVariable Long gameId) {
+        List<Rating> list = service.findByGame(gameId);
+        return list.parallelStream().mapToInt(Rating::getValue).average().orElse(0.0);
     }
 
 }
