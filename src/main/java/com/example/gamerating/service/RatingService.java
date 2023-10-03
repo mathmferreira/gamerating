@@ -24,4 +24,9 @@ public class RatingService extends CrudService<Rating> {
         return repository.findByGameId(gameId);
     }
 
+    public double findAvgByGame(Long id) {
+        List<Rating> list = findByGame(id);
+        return list.parallelStream().mapToInt(Rating::getValue).average().orElse(0.0);
+    }
+
 }
