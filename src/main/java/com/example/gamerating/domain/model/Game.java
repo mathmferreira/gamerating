@@ -1,12 +1,15 @@
 package com.example.gamerating.domain.model;
 
 import com.example.gamerating.enums.GenreType;
+import com.example.gamerating.util.QueryUtils;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import static com.example.gamerating.util.DBConstUtils.*;
 
@@ -36,5 +39,11 @@ public class Game extends AuditableEntity {
 
     @NotNull
     private LocalDate releaseDate;
+
+    @OneToMany(mappedBy = "game")
+    private Set<Rating> ratings;
+
+    @Formula(QueryUtils.GAME_AVG_RATING_FORMULA_QUERY)
+    private Double avgRating;
 
 }
