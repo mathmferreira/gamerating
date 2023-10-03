@@ -391,6 +391,29 @@ paths:
       security:
         - Authorization: []
   
+  /v1/game/top/{size}:
+    get:
+      tags:
+        - Game
+      summary: Finds the top rated games
+      description: Finds the list of top rated games with a given size
+      operationId: find_top_games
+      parameters:
+        - $ref: '#/components/parameters/Size'
+      responses:
+        '200':
+          description: Success. Returns the top rated list
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopRatedGamesResponse'
+        '400':
+          description: Bad Request. Size cannot be less than 1.
+        '401':
+          description: Unauthorized. The Bearer Token is expired or is not in the request headers. 
+      security:
+        - Authorization: []
+
   /v1/game/{gameId}:
     get:
       tags:
@@ -619,6 +642,54 @@ paths:
       security:
         - Authorization: []
 
+  /v1/rating/game/{gameId}:
+    get:
+      tags:
+        - Rating
+      summary: Finds the ratings of a game by ID
+      description: Finds the ratings of a game with the given ID
+      operationId: find_rating_by_id_game
+      parameters:
+        - $ref: '#/components/parameters/GameId'
+      responses:
+        '200':
+          description: Success. Returns the list of ratings of the game.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameRatingsResponse'
+        '401':
+          description: Unauthorized. The Bearer Token is expired or is not in the request headers.
+        '404':
+          description: Not Found. The game id has not been found.
+      security:
+        - Authorization: []
+
+  /v1/rating/game/avg/{gameId}:
+    get:
+      tags:
+        - Rating
+      summary: Finds the ratings average of ratings of a game by ID
+      description: Finds the ratings average of a game with the given ID
+      operationId: find_avg_rating_by_id_game
+      parameters:
+        - $ref: '#/components/parameters/GameId'
+      responses:
+        '200':
+          description: Success. Returns the ratings average values of a game by ID. 0 if the game does not have ratings.
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: double
+                example: 4.2
+        '401':
+          description: Unauthorized. The Bearer Token is expired or is not in the request headers.
+        '404':
+          description: Not Found. The game id has not been found.
+      security:
+        - Authorization: []
+
   /v1/rating/{ratingId}:
     get:
       tags:
@@ -742,6 +813,15 @@ components:
       name: ratingId
       in: path
       description: Rating ID
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+    Size:
+      name: size
+      in: path
+      description: Top rated list size
       required: true
       schema:
         type: integer
@@ -891,6 +971,24 @@ components:
           format: int64
           example: 123
     
+    RatingWithUserEmail:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int64
+          example: 4
+        comments:
+          type: string
+          example: An example of comment
+        userId:
+          type: integer
+          format: int64
+          example: 123
+        email:
+          type: string
+          example: example@gmail.com
+
     ListRating:
       type: array
       items:
@@ -912,6 +1010,38 @@ components:
       allOf:
         - $ref: '#/components/schemas/Id'
         - $ref: '#/components/schemas/Rating'
+
+    GameRatingsResponse:
+      type: array
+      items:
+        allOf:
+          - $ref: '#/components/schemas/Id'
+          - $ref: '#/components/schemas/RatingWithUserEmail'
+
+    GameWithAvg:
+      allOf:
+        - $ref: '#/components/schemas/Game'
+      properties:
+        avgRating: 
+          type: number
+          format: float
+          example: 4.2
+        
+    TopRatedGamesResponse:
+      type: array
+      items: 
+        $ref: '#/components/schemas/GameWithAvg'
+      example:
+        - title: "God of War"
+          description: "An description of the game"
+          genreType: ACTION_ADVENTURE
+          releaseDate: 2018-04-20
+          avgRating: 4.2
+        - title: "Yu-Gi-Oh! Master Duel"
+          description: "An description of the game"
+          genreType: BOARD_CARD_GAME
+          releaseDate: 2022-01-18
+          avgRating: 3.9
 
   securitySchemes:
     Authorization:
