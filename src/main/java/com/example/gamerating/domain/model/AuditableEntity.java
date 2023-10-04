@@ -28,11 +28,11 @@ public abstract class AuditableEntity implements AbstractEntity {
     private String createdBy;
 
     @LastModifiedDate
-    @Column(name = DBConstUtils.AUD + "last_updated_date")
+    @Column(name = DBConstUtils.AUD + "last_updated_date", insertable = false)
     private LocalDateTime lastUpdatedDate;
 
     @LastModifiedBy
-    @Column(name = DBConstUtils.AUD + "last_updated_by")
+    @Column(name = DBConstUtils.AUD + "last_updated_by", insertable = false)
     private String lastUpdatedBy;
 
 }
