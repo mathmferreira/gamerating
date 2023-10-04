@@ -4,12 +4,24 @@ import com.example.gamerating.controller.RatingController;
 import com.example.gamerating.converter.Converter;
 import com.example.gamerating.converter.RatingConverter;
 import com.example.gamerating.domain.model.Rating;
+import com.example.gamerating.domain.model.User;
 import com.example.gamerating.domain.vo.RatingVO;
+import com.example.gamerating.records.RatingRecord;
 import com.example.gamerating.service.CrudService;
 import com.example.gamerating.service.RatingService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.when;
 
 @WebMvcTest(RatingController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -61,6 +73,61 @@ public class RatingIntegrationTests extends CrudIntegrationTests<Rating, RatingV
         entityUpdated = Rating.builder().id(1L).value(3).comments("Comments Updated").build();
         voPartialUpdated = RatingVO.builder().id(1L).value(3).comments("Comments Updated").build();
         basePath = "/v1/rating";
+    }
+
+    @Test
+    public void givenGameId_whenFindByGame_thenReturnStatus200() throws JsonProcessingException {
+        listEntity1.setUser(User.builder().id(1L).email("example1@gmail.com").build());
+        listEntity2.setUser(User.builder().id(2L).email("example2@gmail.com").build());
+        RatingRecord record1 = new RatingRecord(1L, 3, null, 1L, "example1@gmail.com");
+        RatingRecord record2 = new RatingRecord(2L, 4, null, 2L, "example2@gmail.com");
+        List<RatingRecord> records = List.of(record1, record2);
+        List<Rating> ratings = List.of(listEntity1, listEntity2);
+
+        when(service.findByGame(1L)).thenReturn(ratings);
+
+        given().when().get(basePath + "/game/1")
+                .then().log().ifValidationFails()
+                .assertThat().status(HttpStatus.OK)
+                .body(notNullValue(), not(emptyString()))
+                .body(equalTo(mapper.writeValueAsString(records)));
+    }
+
+    @Test
+    public void givenGameId_whenFindByGame_thenReturnEmptyListStatus200() throws JsonProcessingException {
+        List<RatingRecord> records = new ArrayList<>();
+
+        given().when().get(basePath + "/game/0")
+                .then().log().ifValidationFails()
+                .assertThat().status(HttpStatus.OK)
+                .body(notNullValue(), not(emptyString()))
+                .body(equalTo(mapper.writeValueAsString(records)));
+    }
+
+    @Test
+    public void givenGameId_whenFindAvgByGame_thenReturnAverageRatingsValue() throws JsonProcessingException {
+        double avgExpected = 3.5;
+
+        when(service.findAvgByGame(1L)).thenReturn(avgExpected);
+
+        given().when().get(basePath + "/game/avg/1")
+                .then().log().ifValidationFails()
+                .assertThat().status(HttpStatus.OK)
+                .body(notNullValue(), not(emptyString()))
+                .body(equalTo(mapper.writeValueAsString(avgExpected)));
+    }
+
+    @Test
+    public void givenGameId_whenFindAvgByGame_thenReturnZero() throws JsonProcessingException {
+        double avgExpected = 0.0;
+
+        when(service.findAvgByGame(0L)).thenReturn(avgExpected);
+
+        given().when().get(basePath + "/game/avg/0")
+                .then().log().ifValidationFails()
+                .assertThat().status(HttpStatus.OK)
+                .body(notNullValue(), not(emptyString()))
+                .body(equalTo(mapper.writeValueAsString(avgExpected)));
     }
 
 }
